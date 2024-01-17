@@ -8,15 +8,21 @@ use App\Models\Project;
 
 class ProjectController extends Controller
 {
-    public function index(Request $request)
-    {
-
-        // $results = Project::with('technology', 'types', 'technology.projects')->paginate(10);
-        $results = Project::all();
+    public function index() {
+        $projects = Project::with('type', 'technologies')->get();
 
         return response()->json([
-            'results' => $results,
-            'success' => true
+            'success' => true,
+            'results' => $projects
         ]);
-    }    
+    }
+
+    public function show(Project $project) {
+
+        $project->load('technologies', 'type') ;
+
+        return response()->json([
+            'project' => $project
+        ]);
+    }
 }
