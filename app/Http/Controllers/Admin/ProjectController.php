@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Technology;
 use App\Models\Type;
+use Illuminate\Support\Str;
+
 
 use Illuminate\Http\Request;
 
@@ -38,6 +40,8 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        $data['slug'] = Str::slug($data['title'], '-');
+
         $request->validate([
             'title' => 'required|max:255|',
             'thumb' => 'required|url',
@@ -83,6 +87,8 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $data = $request->all();
+
+        $data['slug'] = Str::slug($data['title'], '-'); 
 
         $request->validate([
             'title' => 'required|max:255|',
